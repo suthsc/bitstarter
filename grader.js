@@ -69,6 +69,7 @@ if (require.main == module) {
 	.option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
 	.option('-u, --url <url>', 'URL to index.html')
 	.parse(process.argv);
+    var checkJson, outJson;
     if (program.url) {
 	request.get(program.url).on('complete', function (result) {
 	    if (result instanceof Error) {
@@ -76,13 +77,16 @@ if (require.main == module) {
 		process.exit(1);
 	    } else {
 		fs.writeFileSync('/tmp/download.html', 'utf-8');
-		program.file = '/tmp/download.html';
+		checkJson = checkHtmlFile('/tmp/download.html', program.checks);
+		outJson = JSON.stringify(checkJson, null, 4);
+		console.log(outJson);
 	    }
 	});
+    } else {
+	checkJson = checkHtmlFile(program.file, program.checks);
+	outJson = JSON.stringify(checkJson, null, 4);
+	console.log(outJson);
     }
-    var checkJson = checkHtmlFile(program.file, program.checks);
-    var outJson = JSON.stringify(checkJson, null, 4);
-    console.log(outJson);
 } else {
     exports.checkHtmlFile = checkHtmlFile;
 }
