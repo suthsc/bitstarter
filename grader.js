@@ -76,7 +76,7 @@ if (require.main == module) {
 		console.log("error requesting %s", program.url);
 		process.exit(1);
 	    } else {
-		fs.writeFileSync('/tmp/download.html', 'utf-8');
+		fs.writeFileSync('/tmp/download.html', result);
 		checkJson = checkHtmlFile('/tmp/download.html', program.checks);
 		outJson = JSON.stringify(checkJson, null, 4);
 		console.log(outJson);
